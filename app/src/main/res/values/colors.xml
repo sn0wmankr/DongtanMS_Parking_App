@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- 🎨 기본 테마 색상 -->
+    <color name="primary_green">#426A44</color>
+    <color name="primary_dark">#2F4A30</color>
+    <color name="accent">#A5D6A7</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="text_dark">#212121</color>
+
+    <!-- 🌿 버튼 색상 -->
+    <color name="button_positive">#426A44</color>
+    <color name="button_neutral">#9E9E9E</color>
+    <color name="button_danger">#C62828</color>
+
 </resources>
