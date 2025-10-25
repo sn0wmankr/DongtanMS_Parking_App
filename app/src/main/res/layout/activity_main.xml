@@ -4,23 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:keepScreenOn="true">
 
     <!-- ===== 왼쪽 영역 : 숫자패드 + 입력창 ===== -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="1.3"
         android:gravity="center"
         android:paddingEnd="16dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="동탄명성교회 주차 등록"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="#426a44"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvInput"
-            android:text="____"
-            android:textSize="64sp"
+            android:text="차량 번호를 입력해주세요"
+            android:textSize="48sp"
             android:textStyle="bold"
-            android:textColor="#426A44"
+            android:textColor="#9E9E9E"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,64 +59,22 @@
             android:useDefaultMargins="true">
 
             <!-- 숫자버튼 -->
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn1"
-                android:text="1" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn2"
-                android:text="2" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn3"
-                android:text="3" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn1" android:text="1" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn2" android:text="2" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn3" android:text="3" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn4" android:text="4" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn5" android:text="5" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn6" android:text="6" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn7" android:text="7" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn8" android:text="8" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn9" android:text="9" />
 
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn4"
-                android:text="4" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn5"
-                android:text="5" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn6"
-                android:text="6" />
+            <!-- (빈 공간), 0, 지움 버튼 -->
+            <Space
+                android:layout_columnWeight="1" />
+            <Button style="@style/NumPadButton" android:id="@+id/btn0" android:text="0" />
+            <Button style="@style/NumPadButton" android:id="@+id/btnBack" android:text="지움" android:backgroundTint="@color/button_danger" android:textColor="#FFFFFF" />
 
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn7"
-                android:text="7" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn8"
-                android:text="8" />
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn9"
-                android:text="9" />
-
-            <!-- ←, 0, 등록 버튼 -->
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btnBack"
-                android:text="←"
-                android:backgroundTint="#BDBDBD"
-                android:textColor="#000000" />
-
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btn0"
-                android:text="0" />
-
-            <Button
-                style="@style/NumPadButton"
-                android:id="@+id/btnSubmit"
-                android:text="등록"
-                android:backgroundTint="#426A44"
-                android:textColor="#FFFFFF" />
         </GridLayout>
     </LinearLayout>
 
@@ -102,20 +83,34 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.3"
+        android:layout_weight="1"
         android:background="#FFFFFF"
         android:elevation="6dp"
         android:padding="16dp">
 
-        <TextView
-            android:text="등록 차량 목록"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#426A44"
-            android:layout_marginBottom="12dp"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center" />
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:text="등록 차량 목록"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#426A44" />
+
+            <ImageButton
+                android:id="@+id/btnAdmin"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_menu_manage"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_gravity="end|center_vertical"
+                android:contentDescription="관리자 설정" />
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerParking"

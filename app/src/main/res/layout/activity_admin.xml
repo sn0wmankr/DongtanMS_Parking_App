@@ -1,119 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/background_light"
+    android:orientation="horizontal"
+    android:padding="24dp">
 
+    <!-- Left Panel -->
     <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingEnd="16dp">
 
-        <!-- 제목 -->
-        <TextView
-            android:text="관리자 패널"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
-
-        <!-- 통계 숫자 -->
-        <TextView
-            android:id="@+id/tvTotal"
-            android:text="총 등록 차량 : 0 대"
-            android:textSize="22sp"
-            android:textColor="@color/text_dark"
-            android:layout_marginBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvDoneRate"
-            android:text="완료 비율 : 0%"
-            android:textSize="22sp"
-            android:textColor="@color/text_dark"
-            android:layout_marginBottom="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- 전체 삭제 버튼 -->
-        <Button
-            android:id="@+id/btnClear"
-            android:text="전체 삭제"
-            android:backgroundTint="#C62828"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
-
+        <!-- Stats -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnBackup"
-                android:text="데이터 백업"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/primary_green"
-                android:textColor="#FFFFFF"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:text="요약"
+                android:textColor="@color/primary_dark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnRestore"
-                android:text="데이터 복원"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/primary_dark"
-                android:textColor="#FFFFFF" />
+                android:layout_marginBottom="8dp"
+                android:text="총 등록 차량 : 0 대"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvDoneRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="완료 비율 : 0%"
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- 로그 -->
-        <TextView
-            android:text="관리자 로그"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_dark"
-            android:layout_marginBottom="8dp"
+        <!-- Data Management -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvLog"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:background="#FFFFFF"
-            android:textSize="14sp"
-            android:padding="12dp"
-            android:minHeight="200dp"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- ===== 여기부터 그래프 영역 ===== -->
-        <TextView
-            android:text="시간대별 등록 분포"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/primary_dark"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:text="데이터 관리"
+                android:textColor="@color/primary_dark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBackup"
+                    style="@style/Widget.App.Button.Primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="백업" />
+
+                <Button
+                    android:id="@+id/btnRestore"
+                    style="@style/Widget.App.Button.Primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="복원" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/button_danger"
+                android:text="전체 삭제" />
+        </LinearLayout>
+
+        <!-- Admin Log -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="관리자 로그"
+                android:textColor="@color/primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp" />
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Right Panel -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:text="시간대별 등록 분포"
+            android:textColor="@color/primary_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <com.dongtanms.parking.ChartView
             android:id="@+id/chartHourly"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="#FFFFFF"
-            android:layout_marginBottom="16dp" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>

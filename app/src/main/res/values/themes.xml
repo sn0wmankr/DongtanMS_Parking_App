@@ -25,8 +25,8 @@
         <item name="android:layout_height">80dp</item>
         <item name="android:layout_margin">6dp</item>
         <item name="android:layout_columnWeight">1</item>
-        <item name="android:backgroundTint">@color/primary_green</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:backgroundTint">@color/numpad_button_background_tint</item>
+        <item name="android:textColor">@color/numpad_button_text_color</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -35,4 +35,3 @@
         <item name="android:insetBottom">0dp</item>
     </style>
 </resources>
-
