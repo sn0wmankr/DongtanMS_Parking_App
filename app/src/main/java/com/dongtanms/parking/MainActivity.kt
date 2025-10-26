@@ -9,10 +9,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,12 +26,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ParkingAdapter
     private lateinit var ttsManager: TTSManager
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+
     private val autoBackupRunnable = object : Runnable {
         override fun run() {
             lifecycleScope.launch {
                 BackupManager.autoBackup(this@MainActivity)
             }
-            handler.postDelayed(this, 5 * 60 * 1000) // 5분마다 자동 백업
+            handler.postDelayed(this, 5 * 60 * 1000)
         }
     }
 
@@ -37,14 +42,13 @@ class MainActivity : AppCompatActivity() {
 
         inputView = findViewById(R.id.tvInput)
         recyclerView = findViewById(R.id.recyclerParking)
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = ParkingAdapter(
-            emptyList(),
             onDelete = { deleteCar(it) },
             onDone = { markAsDone(it) }
         )
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         recyclerView.itemAnimator?.apply {
             addDuration = 300
@@ -56,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed(autoBackupRunnable, 5 * 60 * 1000)
 
         setupButtons()
-        updateInput() // 초기 입력창 상태 설정
+        updateInput()
+        loadParkingList()
 
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.Q) {
             requestPermissions(
@@ -115,7 +120,6 @@ class MainActivity : AppCompatActivity() {
                 if (editText.text.toString() == "8007") {
                     startActivity(Intent(this, AdminActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                    ttsManager.speak("관리자 모드로 전환합니다")
                 }
             }
             .setNegativeButton("취소", null)
@@ -134,52 +138,66 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun numberToKorean(number: String): String {
-        val koreanNumbers = mapOf(
-            '0' to "영", '1' to "일", '2' to "이", '3' to "삼", '4' to "사",
-            '5' to "오", '6' to "육", '7' to "칠", '8' to "팔", '9' to "구"
-        )
-        return number.map { koreanNumbers[it] }.joinToString(" ")
+    private fun createGroupedList(entries: List<ParkingEntry>): List<ListItem> {
+        val groupedList = mutableListOf<ListItem>()
+        if (entries.isEmpty()) return groupedList
+
+        val sdf = SimpleDateFormat("yyyy년 M월 d일 (E)", Locale.KOREAN)
+        var lastHeader = ""
+
+        for (entry in entries) {
+            val dateString = sdf.format(Date(entry.createdAt))
+            if (dateString != lastHeader) {
+                groupedList.add(ListItem.DateItem(dateString))
+                lastHeader = dateString
+            }
+            groupedList.add(ListItem.EntryItem(entry))
+        }
+        return groupedList
     }
 
     private fun registerCar(number: String) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(this@MainActivity)
             db.parkingDao().insert(ParkingEntry(plateNumber = number))
-            val koreanNumber = numberToKorean(number)
-            ttsManager.speak("$koreanNumber 번 차량 등록되었습니다")
-            loadParkingList()
+            withContext(Dispatchers.Main) {
+                ttsManager.speak("등록되었습니다")
+                loadParkingList()
+            }
             BackupManager.autoBackup(this@MainActivity)
         }
     }
 
     private fun deleteCar(entry: ParkingEntry) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(this@MainActivity)
             db.parkingDao().delete(entry)
-            val koreanNumber = numberToKorean(entry.plateNumber)
-            ttsManager.speak("$koreanNumber 번 차량이 삭제되었습니다")
-            loadParkingList()
+            withContext(Dispatchers.Main) {
+                loadParkingList()
+            }
             BackupManager.autoBackup(this@MainActivity)
         }
     }
 
     private fun markAsDone(entry: ParkingEntry) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(this@MainActivity)
             db.parkingDao().update(entry.copy(status = "done"))
-            val koreanNumber = numberToKorean(entry.plateNumber)
-            ttsManager.speak("$koreanNumber 번 차량 완료 처리되었습니다")
-            loadParkingList()
+            withContext(Dispatchers.Main) {
+                loadParkingList()
+            }
             BackupManager.autoBackup(this@MainActivity)
         }
     }
 
     private fun loadParkingList() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(this@MainActivity)
             val data = db.parkingDao().getAll()
-            adapter.updateData(data)
+            val listItems = createGroupedList(data)
+            withContext(Dispatchers.Main) {
+                adapter.updateData(listItems)
+            }
         }
     }
 
